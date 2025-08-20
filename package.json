@@ -1,6 +1,6 @@
 {
   "name": "@akaoio/util",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A comprehensive TypeScript utility library for Node.js and browser environments",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
