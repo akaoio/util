@@ -1,0 +1,16 @@
+src/
+tests/
+coverage/
+.eslintrc.js
+.prettierrc
+jest.config.js
+tsconfig.json
+tsconfig.esm.json
+webpack.config.js
+*.log
+.DS_Store
+.env
+.git/
+.github/
+.vscode/
+*.tgz

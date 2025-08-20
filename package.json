@@ -1,0 +1,129 @@
+{
+  "name": "@akaoio/util",
+  "version": "1.0.0",
+  "description": "A comprehensive TypeScript utility library for Node.js and browser environments",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "browser": "dist/browser/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "browser": "./dist/browser/index.js"
+    },
+    "./string": {
+      "types": "./dist/string/index.d.ts",
+      "import": "./dist/esm/string/index.js",
+      "require": "./dist/string/index.js"
+    },
+    "./array": {
+      "types": "./dist/array/index.d.ts",
+      "import": "./dist/esm/array/index.js",
+      "require": "./dist/array/index.js"
+    },
+    "./object": {
+      "types": "./dist/object/index.d.ts",
+      "import": "./dist/esm/object/index.js",
+      "require": "./dist/object/index.js"
+    },
+    "./number": {
+      "types": "./dist/number/index.d.ts",
+      "import": "./dist/esm/number/index.js",
+      "require": "./dist/number/index.js"
+    },
+    "./date": {
+      "types": "./dist/date/index.d.ts",
+      "import": "./dist/esm/date/index.js",
+      "require": "./dist/date/index.js"
+    },
+    "./crypto": {
+      "types": "./dist/crypto/index.d.ts",
+      "import": "./dist/esm/crypto/index.js",
+      "require": "./dist/crypto/index.js"
+    },
+    "./file": {
+      "types": "./dist/file/index.d.ts",
+      "import": "./dist/esm/file/index.js",
+      "require": "./dist/file/index.js"
+    },
+    "./random": {
+      "types": "./dist/random/index.d.ts",
+      "import": "./dist/esm/random/index.js",
+      "require": "./dist/random/index.js"
+    },
+    "./url": {
+      "types": "./dist/url/index.d.ts",
+      "import": "./dist/esm/url/index.js",
+      "require": "./dist/url/index.js"
+    },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "import": "./dist/esm/validation/index.js",
+      "require": "./dist/validation/index.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:browser",
+    "build:cjs": "tsc",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:browser": "webpack --config webpack.config.js",
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run test",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akaoio/util.git"
+  },
+  "keywords": [
+    "utility",
+    "utils",
+    "helper",
+    "typescript",
+    "nodejs",
+    "browser",
+    "akaoio"
+  ],
+  "author": "akaoio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/akaoio/util/issues"
+  },
+  "homepage": "https://github.com/akaoio/util#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.2.5",
+    "ts-jest": "^29.1.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.3",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
