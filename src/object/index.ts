@@ -24,7 +24,7 @@ export function deepMerge<T extends Record<string, any>>(...objects: Partial<T>[
       const val = obj[key];
       if (val === undefined) continue;
       
-      if (typeof val === 'object' && val !== null && !Array.isArray(val) && !(val instanceof Date)) {
+      if (typeof val === 'object' && val !== null && !Array.isArray(val) && Object.prototype.toString.call(val) !== '[object Date]') {
         result[key] = deepMerge(result[key] || {}, val);
       } else {
         result[key] = val as any;

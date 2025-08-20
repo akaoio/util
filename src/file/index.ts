@@ -1,19 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { promisify } from 'util';
 
-const readFile = fs.promises ? fs.promises.readFile : promisify(fs.readFile);
-const writeFile = fs.promises ? fs.promises.writeFile : promisify(fs.writeFile);
-const mkdir = fs.promises ? fs.promises.mkdir : promisify(fs.mkdir);
-const readdir = fs.promises ? fs.promises.readdir : promisify(fs.readdir);
-const stat = fs.promises ? fs.promises.stat : promisify(fs.stat);
-const unlink = fs.promises ? fs.promises.unlink : promisify(fs.unlink);
-const rmdir = fs.promises ? fs.promises.rmdir : promisify(fs.rmdir);
-const copyFile = fs.promises ? fs.promises.copyFile : promisify(fs.copyFile);
+const { promises: fsPromises } = fs;
 
 export async function exists(filePath: string): Promise<boolean> {
   try {
-    await stat(filePath);
+    await fsPromises.stat(filePath);
     return true;
   } catch {
     return false;
@@ -31,7 +23,7 @@ export function existsSync(filePath: string): boolean {
 
 export async function ensureDir(dirPath: string): Promise<void> {
   try {
-    await mkdir(dirPath, { recursive: true });
+    await fsPromises.mkdir(dirPath, { recursive: true });
   } catch (error: any) {
     if (error.code !== 'EEXIST') {
       throw error;
@@ -50,7 +42,7 @@ export function ensureDirSync(dirPath: string): void {
 }
 
 export async function readJson<T = any>(filePath: string): Promise<T> {
-  const content = await readFile(filePath, 'utf-8');
+  const content = await fsPromises.readFile(filePath, 'utf-8');
   return JSON.parse(content);
 }
 
@@ -65,7 +57,7 @@ export async function writeJson(filePath: string, data: any, options?: {
 }): Promise<void> {
   const { spaces = 2, replacer } = options || {};
   const content = JSON.stringify(data, replacer, spaces);
-  await writeFile(filePath, content, 'utf-8');
+  await fsPromises.writeFile(filePath, content, 'utf-8');
 }
 
 export function writeJsonSync(filePath: string, data: any, options?: {
@@ -78,7 +70,7 @@ export function writeJsonSync(filePath: string, data: any, options?: {
 }
 
 export async function readText(filePath: string): Promise<string> {
-  return await readFile(filePath, 'utf-8');
+  return await fsPromises.readFile(filePath, 'utf-8');
 }
 
 export function readTextSync(filePath: string): string {
@@ -86,7 +78,7 @@ export function readTextSync(filePath: string): string {
 }
 
 export async function writeText(filePath: string, content: string): Promise<void> {
-  await writeFile(filePath, content, 'utf-8');
+  await fsPromises.writeFile(filePath, content, 'utf-8');
 }
 
 export function writeTextSync(filePath: string, content: string): void {
@@ -94,7 +86,7 @@ export function writeTextSync(filePath: string, content: string): void {
 }
 
 export async function appendText(filePath: string, content: string): Promise<void> {
-  await fs.promises.appendFile(filePath, content, 'utf-8');
+  await fsPromises.appendFile(filePath, content, 'utf-8');
 }
 
 export function appendTextSync(filePath: string, content: string): void {
@@ -102,11 +94,11 @@ export function appendTextSync(filePath: string, content: string): void {
 }
 
 export async function copy(src: string, dest: string): Promise<void> {
-  const srcStat = await stat(src);
+  const srcStat = await fsPromises.stat(src);
   
   if (srcStat.isDirectory()) {
     await ensureDir(dest);
-    const files = await readdir(src);
+    const files = await fsPromises.readdir(src);
     
     for (const file of files) {
       const srcPath = path.join(src, file);
@@ -114,7 +106,7 @@ export async function copy(src: string, dest: string): Promise<void> {
       await copy(srcPath, destPath);
     }
   } else {
-    await copyFile(src, dest);
+    await fsPromises.copyFile(src, dest);
   }
 }
 
@@ -137,18 +129,18 @@ export function copySync(src: string, dest: string): void {
 
 export async function remove(filePath: string): Promise<void> {
   try {
-    const fileStat = await stat(filePath);
+    const fileStat = await fsPromises.stat(filePath);
     
     if (fileStat.isDirectory()) {
-      const files = await readdir(filePath);
+      const files = await fsPromises.readdir(filePath);
       
       for (const file of files) {
         await remove(path.join(filePath, file));
       }
       
-      await rmdir(filePath);
+      await fsPromises.rmdir(filePath);
     } else {
-      await unlink(filePath);
+      await fsPromises.unlink(filePath);
     }
   } catch (error: any) {
     if (error.code !== 'ENOENT') {
@@ -190,10 +182,10 @@ export function moveSync(src: string, dest: string): void {
 }
 
 export async function getSize(filePath: string): Promise<number> {
-  const fileStat = await stat(filePath);
+  const fileStat = await fsPromises.stat(filePath);
   
   if (fileStat.isDirectory()) {
-    const files = await readdir(filePath);
+    const files = await fsPromises.readdir(filePath);
     let totalSize = 0;
     
     for (const file of files) {
@@ -267,23 +259,13 @@ export function relative(from: string, to: string): string {
   return path.relative(from, to);
 }
 
-export async function glob(pattern: string, options?: {
-  cwd?: string;
-  ignore?: string[];
-}): Promise<string[]> {
-  const { promisify } = await import('util');
-  const glob = await import('glob');
-  const globAsync = promisify(glob.default);
-  return await globAsync(pattern, options);
-}
-
 export async function find(dir: string, predicate: (file: string, stats: fs.Stats) => boolean): Promise<string[]> {
   const results: string[] = [];
-  const files = await readdir(dir);
+  const files = await fsPromises.readdir(dir);
   
   for (const file of files) {
     const filePath = path.join(dir, file);
-    const fileStat = await stat(filePath);
+    const fileStat = await fsPromises.stat(filePath);
     
     if (predicate(filePath, fileStat)) {
       results.push(filePath);
