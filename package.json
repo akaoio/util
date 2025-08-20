@@ -87,7 +87,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akaoagent/util.git"
+    "url": "git+https://github.com/akaoio/util.git"
   },
   "keywords": [
     "utility",
@@ -101,9 +101,9 @@
   "author": "akaoio",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/akaoagent/util/issues"
+    "url": "https://github.com/akaoio/util/issues"
   },
-  "homepage": "https://github.com/akaoagent/util#readme",
+  "homepage": "https://github.com/akaoio/util#readme",
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
